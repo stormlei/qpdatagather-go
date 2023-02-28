@@ -1,4 +1,4 @@
-package util
+package enum
 
 type Model string
 

@@ -2,15 +2,15 @@ package entity
 
 import (
 	"fmt"
-	"qpdatagather/util"
+	"qpdatagather/enum"
 )
 
 type Device struct {
 	AppId   int64      `json:"appId"`
 	Project string     `json:"project"`
-	Type    util.Type  `json:"type"`
-	Brand   util.Brand `json:"brand"`
-	Model   util.Model `json:"model"`
+	Type    enum.Type  `json:"type"`
+	Brand   enum.Brand `json:"brand"`
+	Model   enum.Model `json:"model"`
 	OriData string     `json:"oriData"`
 	ParData string     `json:"parData"`
 	Status  int64      `json:"status"`

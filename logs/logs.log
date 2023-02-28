@@ -32,3 +32,6 @@
 2023-02-28T16:39:39.957+0800	INFO	api/device.go:62	Device(appId=1, project=test, type=optometry, brand=tianle, model=kr9800, oriData=3333333, parData={"od":{"s":"-0.25","c":"-0.55","a":"-0.65"},"os":{"s":"-0.25","c":"-0.55","a":"-0.65"},"r":{"s":"-0.25","c":"-0.55","a":"-0.65"},"l":{"s":"-0.25","c":"-0.55","a":"-0.65"},"pd":""}, status=100)
 2023-02-28T16:39:44.810+0800	INFO	api/device.go:65	Device(appId=1, project=test, type=optometry, brand=tianle1, model=kr9800, oriData=3333333, parData=, status=0)
 2023-02-28T16:39:53.051+0800	INFO	api/device.go:62	Device(appId=1, project=test, type=optometry, brand=tianle, model=kr9800, oriData=3333333, parData={"od":{"s":"-0.25","c":"-0.55","a":"-0.65"},"os":{"s":"-0.25","c":"-0.55","a":"-0.65"},"r":{"s":"-0.25","c":"-0.55","a":"-0.65"},"l":{"s":"-0.25","c":"-0.55","a":"-0.65"},"pd":""}, status=100)
+2023-02-28T17:50:57.384+0800	DEBUG	qpdatagather-go/main.go:31	profile = dev
+2023-02-28T17:51:32.962+0800	INFO	api/device.go:63	Device(appId=1, project=test, type=optometry, brand=tianle, model=kr9800, oriData=3333333, parData={"od":{"s":"-0.25","c":"-0.55","a":"-0.65"},"os":{"s":"-0.25","c":"-0.55","a":"-0.65"},"r":{"s":"-0.25","c":"-0.55","a":"-0.65"},"l":{"s":"-0.25","c":"-0.55","a":"-0.65"},"pd":""}, status=100)
+2023-02-28T17:51:39.845+0800	DEBUG	qpdatagather-go/main.go:31	profile = dev

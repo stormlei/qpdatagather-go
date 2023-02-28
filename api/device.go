@@ -6,6 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"qpdatagather/dataparser/diopter/tianle"
 	"qpdatagather/entity"
+	"qpdatagather/enum"
 	"qpdatagather/log"
 	"qpdatagather/util"
 	"qpdatagather/validator"
@@ -14,9 +15,9 @@ import (
 type deviceCreatePayload struct {
 	AppId   int64      `json:"appId"`
 	Project string     `json:"project"`
-	Type    util.Type  `json:"type" binding:"required"`
-	Brand   util.Brand `json:"brand" binding:"required"`
-	Model   util.Model `json:"model" binding:"required"`
+	Type    enum.Type  `json:"type" binding:"required"`
+	Brand   enum.Brand `json:"brand" binding:"required"`
+	Model   enum.Model `json:"model" binding:"required"`
 	OriData string     `json:"oriData" binding:"required"`
 }
 
@@ -38,18 +39,18 @@ func deviceParser(c *gin.Context) {
 
 	var result any
 	switch typeT {
-	case util.Optometry, "验光仪":
+	case enum.Optometry, "验光仪":
 		switch brand {
-		case util.Tianle, "天乐":
+		case enum.Tianle, "天乐":
 			switch model {
-			case util.KR9800:
+			case enum.KR9800:
 				result = tianle.Kr9800Parse(oriDataByteSlice)
 			}
-		case util.Faliao, "法里奥":
+		case enum.Faliao, "法里奥":
 
 		}
-	case util.Biometer, "生物测量仪":
-	case util.Tonometer, "眼压计":
+	case enum.Biometer, "生物测量仪":
+	case enum.Tonometer, "眼压计":
 	}
 
 	device := &entity.Device{}
