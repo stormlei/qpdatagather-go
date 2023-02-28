@@ -1,0 +1,9 @@
+#服务配置
+[service]
+name = "qpdatagather"
+port = 8080
+version = "0.0.1"
+
+#日志
+[log]
+level = "debug"
