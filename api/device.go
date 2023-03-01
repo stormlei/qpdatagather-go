@@ -1,9 +1,13 @@
 package api
 
 import (
+	"bytes"
+	"compress/gzip"
 	"encoding/base64"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
+	"io/ioutil"
+	"qpdatagather/dataparser/diopter/hand/meiwo"
 	"qpdatagather/dataparser/diopter/tianle"
 	"qpdatagather/entity"
 	"qpdatagather/enum"
@@ -28,30 +32,7 @@ func deviceParser(c *gin.Context) {
 		return
 	}
 
-	var typeT = payload.Type
-	var brand = payload.Brand
-	var model = payload.Model
-	var oriData = payload.OriData
-	oriDataByteSlice, _ := base64.StdEncoding.DecodeString(oriData)
-	//var str = string(oriDataByteSince)
-	//var version = 0
-	//var imageUrl = ""
-
-	var result any
-	switch typeT {
-	case enum.Optometry, "验光仪":
-		switch brand {
-		case enum.Tianle, "天乐":
-			switch model {
-			case enum.KR9800:
-				result = tianle.Kr9800Parse(oriDataByteSlice)
-			}
-		case enum.Faliao, "法里奥":
-
-		}
-	case enum.Biometer, "生物测量仪":
-	case enum.Tonometer, "眼压计":
-	}
+	dataParse(payload)
 
 	device := &entity.Device{}
 	payloadJson, _ := json.Marshal(payload)
@@ -65,5 +46,93 @@ func deviceParser(c *gin.Context) {
 	} else {
 		log.Info(device.ToString())
 		util.ResponseErr(c, "解析失败")
+	}
+}
+
+var result any
+
+type jsonData struct {
+	version int64  `json:"version"`
+	gzip    bool   `json:"gzip"`
+	data    string `json:"data"`
+}
+
+func dataParse(payload deviceCreatePayload) {
+	var typeT = payload.Type
+	var brand = payload.Brand
+	var model = payload.Model
+	var oriData = payload.OriData
+	oriDataByteSlice, _ := base64.StdEncoding.DecodeString(oriData)
+	var str = string(oriDataByteSlice)
+	var version int64 = 0
+	if isJSON(str) {
+		jsonObj := &jsonData{}
+		_ = json.Unmarshal([]byte(str), jsonObj)
+		version = jsonObj.version
+		if version == 1 {
+			var gzip = jsonObj.gzip
+			if gzip {
+				var data = jsonObj.data
+				dataByteSlice, _ := base64.StdEncoding.DecodeString(data)
+				oriDataByteSlice = unGzip(dataByteSlice)
+			} else {
+				oriDataByteSlice = []byte(jsonObj.data)
+			}
+		}
+	}
+
+	switch typeT {
+	case enum.Optometry, "验光仪":
+		switch brand {
+		case enum.Tianle, "天乐":
+			switch model {
+			case enum.KR9800:
+				result = tianle.Kr9800DataParse(oriDataByteSlice)
+			}
+		case enum.Faliao, "法里奥":
+		case enum.Meiwo, enum.Mediworks, "美沃":
+			switch model {
+			case enum.V100:
+				result = meiwo.V100DataParse(oriDataByteSlice)
+			}
+		}
+
+	case enum.Biometer, "生物测量仪":
+	case enum.Tonometer, "眼压计":
+	}
+}
+
+func unGzip(byteSlice []byte) []byte {
+	reader := bytes.NewReader(byteSlice)
+	gzReader, err := gzip.NewReader(reader)
+	if err != nil {
+		log.Error(err) // Maybe panic here, depends on your error handling.
+	}
+	defer gzReader.Close()
+	output, err := ioutil.ReadAll(gzReader)
+	if err != nil {
+		log.Error(err)
+	}
+	return output
+}
+
+func isJSON(str string) bool {
+	var js json.RawMessage
+	return json.Unmarshal([]byte(str), &js) == nil
+}
+
+func deviceTest(payload deviceCreatePayload) any {
+	dataParse(payload)
+
+	device := &entity.Device{}
+	payloadJson, _ := json.Marshal(payload)
+	_ = json.Unmarshal(payloadJson, device)
+	if result != nil {
+		resultJson, _ := json.Marshal(result)
+		device.ParData = string(resultJson)
+		device.Status = 100
+		return device.ParData
+	} else {
+		return nil
 	}
 }

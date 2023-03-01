@@ -2,7 +2,7 @@ package tianle
 
 import "qpdatagather/dataparser"
 
-func Kr9800Parse(byteSince []byte) dataparser.RefractionData {
+func Kr9800DataParse(byteSlice []byte) dataparser.RefractionData {
 	result := dataparser.RefractionData{}
 	eyeDataRight := dataparser.EyeData{}
 	eyeDataLeft := dataparser.EyeData{}
