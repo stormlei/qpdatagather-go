@@ -6,7 +6,7 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"github.com/gin-gonic/gin"
-	"io/ioutil"
+	"io"
 	"qpdatagather/dataparser/diopter/hand/meiwo"
 	"qpdatagather/dataparser/diopter/tianle"
 	"qpdatagather/entity"
@@ -52,9 +52,9 @@ func deviceParser(c *gin.Context) {
 var result any
 
 type jsonData struct {
-	version int64  `json:"version"`
-	gzip    bool   `json:"gzip"`
-	data    string `json:"data"`
+	Version int64  `json:"version"`
+	Gzip    bool   `json:"gzip"`
+	Data    string `json:"data"`
 }
 
 func dataParse(payload deviceCreatePayload) {
@@ -68,15 +68,15 @@ func dataParse(payload deviceCreatePayload) {
 	if isJSON(str) {
 		jsonObj := &jsonData{}
 		_ = json.Unmarshal([]byte(str), jsonObj)
-		version = jsonObj.version
+		version = jsonObj.Version
 		if version == 1 {
-			var gzip = jsonObj.gzip
-			if gzip {
-				var data = jsonObj.data
+			var gzipT = jsonObj.Gzip
+			if gzipT {
+				var data = jsonObj.Data
 				dataByteSlice, _ := base64.StdEncoding.DecodeString(data)
 				oriDataByteSlice = unGzip(dataByteSlice)
 			} else {
-				oriDataByteSlice = []byte(jsonObj.data)
+				oriDataByteSlice = []byte(jsonObj.Data)
 			}
 		}
 	}
@@ -109,7 +109,7 @@ func unGzip(byteSlice []byte) []byte {
 		log.Error(err) // Maybe panic here, depends on your error handling.
 	}
 	defer gzReader.Close()
-	output, err := ioutil.ReadAll(gzReader)
+	output, err := io.ReadAll(gzReader)
 	if err != nil {
 		log.Error(err)
 	}
