@@ -7,7 +7,7 @@ import (
 	"strings"
 )
 
-func Kr9800DataParse(byteSlice []byte) diopter.RefractionData {
+func Rm9000DataParse(byteSlice []byte) diopter.RefractionData {
 	var result diopter.RefractionData
 	var eyeDataRight diopter.EyeData
 	var eyeDataLeft diopter.EyeData
@@ -16,7 +16,7 @@ func Kr9800DataParse(byteSlice []byte) diopter.RefractionData {
 	var rArray = strings.Split(obj, "E")
 	for i := 0; i < len(rArray); i++ {
 		if strings.HasPrefix(rArray[i], "S-R-R") {
-			reg, _ := regexp.Compile("[-+]?\\d+[\\.]?\\d*")
+			reg, _ := regexp.Compile("[-+]?\\d+[\\.]?\\d+")
 			rList := reg.FindAllString(rArray[i], -1)
 			var s = rList[0]
 			if strings.Index(s, "0") == 1 {
@@ -26,10 +26,7 @@ func Kr9800DataParse(byteSlice []byte) diopter.RefractionData {
 			if strings.Index(c, "0") == 1 {
 				c = strings.Replace(c, "0", "", 1)
 			}
-			var a = rList[2]
-			if strings.Index(a, "0") == 1 {
-				a = strings.Replace(a, "0", "", 1)
-			}
+			var a = strings.Replace(rList[2], "+", "", 1)
 
 			eyeDataRight = diopter.EyeData{}
 			eyeDataRight.S = s
@@ -38,7 +35,7 @@ func Kr9800DataParse(byteSlice []byte) diopter.RefractionData {
 			eyeDataRight.A = strconv.Itoa(aInt)
 		}
 		if strings.HasPrefix(rArray[i], "S-R-L") {
-			reg, _ := regexp.Compile("[-+]?\\d+[\\.]?\\d*")
+			reg, _ := regexp.Compile("[-+]?\\d+[\\.]?\\d+")
 			lList := reg.FindAllString(rArray[i], -1)
 			var s = lList[0]
 			if strings.Index(s, "0") == 1 {
@@ -48,10 +45,7 @@ func Kr9800DataParse(byteSlice []byte) diopter.RefractionData {
 			if strings.Index(c, "0") == 1 {
 				c = strings.Replace(c, "0", "", 1)
 			}
-			var a = lList[2]
-			if strings.Index(a, "0") == 1 {
-				a = strings.Replace(a, "0", "", 1)
-			}
+			var a = strings.Replace(lList[2], "+", "", 1)
 
 			eyeDataLeft = diopter.EyeData{}
 			eyeDataLeft.S = s

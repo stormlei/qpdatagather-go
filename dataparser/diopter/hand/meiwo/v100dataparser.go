@@ -5,15 +5,15 @@ import (
 	"fmt"
 	"math"
 	"net/url"
-	"qpdatagather/dataparser"
+	"qpdatagather/dataparser/diopter"
 	"strconv"
 	"strings"
 )
 
 func V100DataParse(byteSlice []byte) any {
-	result := dataparser.RefractionData{}
-	eyeDataRight := dataparser.EyeData{}
-	eyeDataLeft := dataparser.EyeData{}
+	result := diopter.RefractionData{}
+	eyeDataRight := diopter.EyeData{}
+	eyeDataLeft := diopter.EyeData{}
 
 	if len(byteSlice) == 0 {
 		return nil

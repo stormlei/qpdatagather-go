@@ -11,4 +11,10 @@ const (
 
 	// Tonometer 眼压计
 	Tonometer Type = "tonometer"
+
+	// Cem 角膜内皮镜
+	Cem Type = "cem"
+
+	// Pyrometer 焦度计
+	Pyrometer Type = "pyrometer"
 )
