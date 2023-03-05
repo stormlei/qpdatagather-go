@@ -20,16 +20,25 @@ const (
 	CT800  Model = "CT-800"
 	CV5000 Model = "CV5000"
 
+	//tianle
+	KR9800 Model = "kr9800"
+	RM9000 Model = "rm9000"
+
+	//suoer
+	Sw9000 Model = "sw9000"
+
+	//faliao
+	Fl800 Model = "fl800"
+
+	//super vision(巨目光学)
+	LM260 Model = "LM-260"
+
 	//zeiss
 	Iolmaster500 Model = "iolmaster500"
 	Iolmaster700 Model = "iolmaster700"
 
 	//haag_streit
 	LS900 Model = "LS900"
-
-	//tianle
-	KR9800 Model = "kr9800"
-	RM9000 Model = "rm9000"
 
 	//meiwo,mediworks
 	V100 Model = "v100"

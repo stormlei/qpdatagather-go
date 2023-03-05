@@ -7,10 +7,18 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"io"
+	nidek2 "qpdatagather/dataparser/biometer/nidek"
+	"qpdatagather/dataparser/biometer/suoer"
+	"qpdatagather/dataparser/biometer/zeiss"
+	nidek4 "qpdatagather/dataparser/cem/nidek"
 	"qpdatagather/dataparser/diopter/hand/meiwo"
 	"qpdatagather/dataparser/diopter/nidek"
 	"qpdatagather/dataparser/diopter/tianle"
 	"qpdatagather/dataparser/diopter/topcon"
+	"qpdatagather/dataparser/pyrometer/faliao"
+	"qpdatagather/dataparser/pyrometer/jumu"
+	nidek3 "qpdatagather/dataparser/tonometer/nidek"
+	topcon2 "qpdatagather/dataparser/tonometer/topcon"
 	"qpdatagather/entity"
 	"qpdatagather/enum"
 	"qpdatagather/log"
@@ -73,8 +81,10 @@ func dataParse(payload deviceCreatePayload) {
 			}
 		case enum.Topcon, "拓普康":
 			switch model {
-			case enum.RM8900:
+			case enum.RM8900, enum.RM800, enum.KR800:
 				result = topcon.TopconDataParse(oriDataByteSlice)
+			case enum.CV5000:
+				result = topcon.CV5000DataParse(oriDataByteSlice)
 			}
 		case enum.Tianle, "天乐":
 			switch model {
@@ -90,9 +100,61 @@ func dataParse(payload deviceCreatePayload) {
 			}
 		}
 	case enum.Biometer, "生物测量仪":
+		switch brand {
+		case enum.Nidek, "尼德克":
+			switch model {
+			case enum.ALScan:
+				result = nidek2.ALScanV2DataParse(oriDataByteSlice)
+			}
+		case enum.Suoer, "索维":
+			switch model {
+			case enum.Sw9000:
+				result = suoer.Sw9000DataParse(oriDataByteSlice)
+			}
+		case enum.Zeiss, "蔡司":
+			switch model {
+			case enum.Iolmaster500:
+				result = zeiss.IolMaster500DataParse(oriDataByteSlice)
+			case enum.Iolmaster700:
+				result = zeiss.IolMaster700DataParse(oriDataByteSlice)
+			}
+		}
 	case enum.Tonometer, "眼压计":
+		switch brand {
+		case enum.Nidek, "尼德克":
+			switch model {
+			case enum.NT510:
+				result = nidek3.NT5100DataParse(oriDataByteSlice)
+			}
+		case enum.Topcon, "拓普康":
+			switch model {
+			case enum.CT1:
+				result = topcon2.CT1DataParse(oriDataByteSlice)
+			case enum.CT800:
+				result = topcon2.CT800DataParse(oriDataByteSlice)
+			}
+		}
 	case enum.Cem, "角膜内皮镜":
+		switch brand {
+		case enum.Nidek, "尼德克":
+			switch model {
+			case enum.Cem530:
+				result = nidek4.Cem530DataParse(oriDataByteSlice)
+			}
+		}
 	case enum.Pyrometer, "焦度计":
+		switch brand {
+		case enum.Faliao, "法里奥":
+			switch model {
+			case enum.Fl800:
+				result = faliao.FL800DataParse(oriDataByteSlice)
+			}
+		case enum.SuperVision, "巨目光学":
+			switch model {
+			case enum.LM260:
+				result = jumu.LM260DataParse(oriDataByteSlice)
+			}
+		}
 	}
 }
 
