@@ -12,7 +12,7 @@ import (
 	"testing"
 )
 
-type DataFormat struct {
+type dataFormat struct {
 	Measure struct {
 		Type string `xml:"type,attr"`
 		SM   struct {
@@ -20,26 +20,40 @@ type DataFormat struct {
 				List struct {
 					Num string `xml:"NUM"`
 					Cd  string `xml:"CD"`
+					Avg string `xml:"AVG"`
+					Sd  string `xml:"SD"`
+					Cv  string `xml:"CV"`
+					Max string `xml:"MAX"`
+					Min string `xml:"MIN"`
+					Hex string `xml:"HEX"`
+					Ct  string `xml:"CT"`
 				} `xml:"List"`
 			} `xml:"R"`
 			L struct {
 				List struct {
 					Num string `xml:"NUM"`
 					Cd  string `xml:"CD"`
+					Avg string `xml:"AVG"`
+					Sd  string `xml:"SD"`
+					Cv  string `xml:"CV"`
+					Max string `xml:"MAX"`
+					Min string `xml:"MIN"`
+					Hex string `xml:"HEX"`
+					Ct  string `xml:"CT"`
 				} `xml:"List"`
 			} `xml:"L"`
 		} `xml:"SM"`
 	} `xml:"Measure"`
 }
 
-func TestXML(t *testing.T) {
-	dataSlice, err := readFileUTF16("../cem530.xml")
+func TestCem530XML(t *testing.T) {
+	dataSlice, err := readFileUTF16("../xml/cem530.xml")
 	if err != nil {
 		fmt.Printf("%s", err)
 		os.Exit(1)
 	}
 
-	var data DataFormat
+	var data dataFormat
 	decoder := xml.NewDecoder(bytes.NewBuffer(dataSlice))
 	decoder.CharsetReader = func(charsetT string, input io.Reader) (io.Reader, error) {
 		return charset.NewReader(input, charsetT)
