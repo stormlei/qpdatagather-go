@@ -109,7 +109,7 @@ func dataParse(payload deviceCreatePayload) {
 		case enum.Suoer, "索维":
 			switch model {
 			case enum.Sw9000:
-				result = suoer.Sw9000DataParse(oriDataByteSlice)
+				result = suoer.SW9000DataParse(oriDataByteSlice)
 			}
 		case enum.Zeiss, "蔡司":
 			switch model {

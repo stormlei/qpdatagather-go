@@ -90,7 +90,7 @@ func parseEyeData(lineBytes []byte) string {
 		sData[i] = lineBytes[i]
 	}
 
-	return strings.ReplaceAll(string(sData), "\\s+", "")
+	return strings.ReplaceAll(string(sData), " ", "")
 }
 
 func readUntilCR(byteSlice []byte) [][]byte {

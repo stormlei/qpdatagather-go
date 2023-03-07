@@ -6,7 +6,7 @@ import (
 	"strings"
 )
 
-func Sw9000DataParse(byteSlice []byte) any {
+func SW9000DataParse(byteSlice []byte) any {
 
 	if len(byteSlice) == 0 {
 		return nil

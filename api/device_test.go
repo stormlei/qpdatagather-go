@@ -7,10 +7,10 @@ import (
 
 func TestDataParse(t *testing.T) {
 	payload := deviceCreatePayload{
-		Type:    "生物测量仪",
-		Brand:   "nidek",
-		Model:   "al-scan",
-		OriData: "AURybQJJRE5JREVLL0FSLTEXTk8zNTI5F0RBTUFSLzAzLzIwMjMuMTQ6NTEXVkQxMi4wMBdXRDQwF09MLTAzLjAwLTAwLjI1MTU3F09SLTAzLjUwLTAwLjAwMDAwF2RMLTAwLjI1LTAwLjAwLTA1F2RSLTAwLjI1KzAwLjI1KzU4FwFEUk0CSUROSURFSy9BUi0xF05PMzUyORdEQU1BUi8wMy8yMDIzLjE0OjUxF1ZEMTIuMDAXV0Q0MBdPTC0wMi43NS0wMC4yNTE2MhdPUi0wMy4yNS0wMC4yNTEyMjkgF1BENTg/Pz8/Pz8XBDMxQzE=",
+		Type:    "验光仪",
+		Brand:   "tianle",
+		Model:   "rm9000",
+		OriData: "UyBObz0wMDAwMCBSIEIgRVMtUi1SIC0wMS41MCAtMDAuMjUgICs5MiA1OSBFUy1SLUwgLTAwLjc1ICswMC4wMCAgKzAwIDU5IEU=",
 	}
 	result := deviceTest(payload)
 	fmt.Println(result)
