@@ -11,7 +11,7 @@ import (
 	"qpdatagather/util"
 )
 
-type DataFormat struct {
+type dataFormat struct {
 	Measure struct {
 		Type string `xml:"type,attr"`
 		SM   struct {
@@ -69,7 +69,7 @@ func Cem530DataParse(byteSlice []byte) any {
 		return nil
 	}
 
-	var data DataFormat
+	var data dataFormat
 	decoder := xml.NewDecoder(bytes.NewBuffer(dataSlice))
 	decoder.CharsetReader = func(charsetT string, input io.Reader) (io.Reader, error) {
 		return charset.NewReader(input, charsetT)
