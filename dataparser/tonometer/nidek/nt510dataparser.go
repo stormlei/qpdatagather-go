@@ -5,13 +5,13 @@ import (
 	"strings"
 )
 
-func NT5100DataParse(byteSlice []byte) any {
+func NT5100DataParse(byteSlice []byte) tonometer.IopData {
 	result := tonometer.IopData{}
 	eyeDataRight := tonometer.EyeData{}
 	eyeDataLeft := tonometer.EyeData{}
 
 	if len(byteSlice) == 0 {
-		return nil
+		return result
 	}
 
 	var (

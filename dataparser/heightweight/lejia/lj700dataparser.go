@@ -5,9 +5,11 @@ import (
 	"strings"
 )
 
-func LJ700DataParse(byteSlice []byte) any {
+func LJ700DataParse(byteSlice []byte) heightweight.HWData {
+	hwData := heightweight.HWData{}
+
 	if len(byteSlice) == 0 {
-		return nil
+		return hwData
 	}
 
 	orderValue := strings.Replace(strings.Replace(string(byteSlice), "OK$", "", 1), "�", "", 1)
@@ -32,7 +34,6 @@ func LJ700DataParse(byteSlice []byte) any {
 		}
 	}
 
-	hwData := heightweight.HWData{}
 	hwData.W = growthkit_weight
 	hwData.H = growthkit_height
 

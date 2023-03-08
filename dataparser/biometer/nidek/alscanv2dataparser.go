@@ -110,16 +110,16 @@ type dataFormat struct {
 	} `xml:"Measure"`
 }
 
-func ALScanV2DataParse(byteSlice []byte) any {
-
-	if len(byteSlice) == 0 {
-		return nil
-	}
-
+func ALScanV2DataParse(byteSlice []byte) biometer.BioData {
+	result := biometer.BioData{}
 	//od
 	eyeDataRight := biometer.EyeData{}
 	//os
 	eyeDataLeft := biometer.EyeData{}
+
+	if len(byteSlice) == 0 {
+		return result
+	}
 
 	var obj = string(byteSlice)
 
@@ -131,7 +131,7 @@ func ALScanV2DataParse(byteSlice []byte) any {
 	dataSlice, err := util.ReadUTF16([]byte(xmlStr))
 	if err != nil {
 		fmt.Printf("%s", err)
-		return nil
+		return result
 	}
 
 	var data dataFormat
@@ -142,7 +142,7 @@ func ALScanV2DataParse(byteSlice []byte) any {
 	err = decoder.Decode(&data)
 	if err != nil {
 		fmt.Println("Error unmarshalling from XML", err)
-		return nil
+		return result
 	}
 
 	eyeDataRight.Al = data.Measure.AL.R.Typical.AxialLength
@@ -164,7 +164,6 @@ func ALScanV2DataParse(byteSlice []byte) any {
 	eyeDataLeft.Ad = data.Measure.ACD.L.Typical.ACD
 	eyeDataLeft.Wtw = data.Measure.WTW.L.Typical.WhiteToWhite
 
-	result := biometer.BioData{}
 	result.Od = eyeDataRight
 	result.Os = eyeDataLeft
 

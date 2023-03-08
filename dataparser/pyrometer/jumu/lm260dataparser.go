@@ -6,15 +6,14 @@ import (
 )
 
 // 巨目焦度计，波特率机子默认115200
-func LM260DataParse(byteSlice []byte) any {
-
-	if len(byteSlice) == 0 {
-		return nil
-	}
-
+func LM260DataParse(byteSlice []byte) pyrometer.PyroData {
 	result := pyrometer.PyroData{}
 	eyeDataRight := pyrometer.EyeData{}
 	eyeDataLeft := pyrometer.EyeData{}
+
+	if len(byteSlice) == 0 {
+		return result
+	}
 
 	var byte22 = readUntilCR(byteSlice)
 	for i := 0; i < len(byte22); i++ {

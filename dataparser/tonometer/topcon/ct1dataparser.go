@@ -13,19 +13,18 @@ var (
 	byteEnd   = 0x04
 )
 
-func CT1DataParse(byteSlice []byte) any {
-
-	if len(byteSlice) == 0 {
-		return nil
-	}
-
-	if int(byteSlice[0]) != byteStart || int(byteSlice[len(byteSlice)-1]) != byteEnd {
-		return nil
-	}
-
+func CT1DataParse(byteSlice []byte) tonometer.IopData {
 	result := tonometer.IopData{}
 	eyeDataRight := tonometer.EyeData{}
 	eyeDataLeft := tonometer.EyeData{}
+
+	if len(byteSlice) == 0 {
+		return result
+	}
+
+	if int(byteSlice[0]) != byteStart || int(byteSlice[len(byteSlice)-1]) != byteEnd {
+		return result
+	}
 
 	var byte22 = readUntilCR(byteSlice)
 	for i := 0; i < len(byte22); i++ {

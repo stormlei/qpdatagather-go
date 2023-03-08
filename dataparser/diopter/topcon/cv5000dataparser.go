@@ -5,16 +5,15 @@ import (
 	"strings"
 )
 
-func CV5000DataParse(byteSlice []byte) any {
-
-	if len(byteSlice) == 0 {
-		return nil
-	}
-
+func CV5000DataParse(byteSlice []byte) diopter.RefractionData {
 	result := diopter.RefractionData{}
 	eyeDataRight := diopter.EyeData{}
 	eyeDataLeft := diopter.EyeData{}
 	pd := ""
+
+	if len(byteSlice) == 0 {
+		return result
+	}
 
 	var byte22 = readUntilCR(byteSlice)
 	for i := 0; i < len(byte22); i++ {

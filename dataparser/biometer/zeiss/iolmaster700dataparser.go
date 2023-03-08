@@ -7,10 +7,11 @@ import (
 	"strings"
 )
 
-func IolMaster700DataParse(byteSlice []byte) any {
+func IolMaster700DataParse(byteSlice []byte) biometer.BioData {
+	result := biometer.BioData{}
 
 	if len(byteSlice) == 0 {
-		return nil
+		return result
 	}
 
 	eyeDataRight := biometer.EyeData{}
@@ -129,7 +130,6 @@ func IolMaster700DataParse(byteSlice []byte) any {
 		}
 	}
 
-	result := biometer.BioData{}
 	result.Od = eyeDataRight
 	result.Os = eyeDataLeft
 

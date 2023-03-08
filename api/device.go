@@ -12,6 +12,7 @@ import (
 	"qpdatagather/dataparser/biometer/zeiss"
 	"qpdatagather/dataparser/bloodpressure/yuwell"
 	nidek4 "qpdatagather/dataparser/cem/nidek"
+	faliao2 "qpdatagather/dataparser/diopter/faliao"
 	"qpdatagather/dataparser/diopter/hand/meiwo"
 	"qpdatagather/dataparser/diopter/nidek"
 	"qpdatagather/dataparser/diopter/tianle"
@@ -90,6 +91,13 @@ func dataParse(payload deviceCreatePayload) {
 				result = topcon.TopconDataParse(oriDataByteSlice)
 			case enum.CV5000:
 				result = topcon.CV5000DataParse(oriDataByteSlice)
+			}
+		case enum.Faliao, "法里奥":
+			switch model {
+			case enum.FR8900:
+				result = nil
+			case enum.FR710, enum.FR900:
+				result = faliao2.Fr710DataParse(oriDataByteSlice)
 			}
 		case enum.Tianle, "天乐":
 			switch model {

@@ -6,9 +6,11 @@ import (
 	"strings"
 )
 
-func JH1663DataParse(byteSlice []byte) any {
+func JH1663DataParse(byteSlice []byte) vitalcapacity.VCData {
+	vcData := vitalcapacity.VCData{}
+
 	if len(byteSlice) == 0 {
-		return nil
+		return vcData
 	}
 
 	result := string(byteSlice)
@@ -23,7 +25,6 @@ func JH1663DataParse(byteSlice []byte) any {
 		vc = strconv.Itoa(vtI)
 	}
 
-	vcData := vitalcapacity.VCData{}
 	vcData.VC = vc
 
 	return vcData

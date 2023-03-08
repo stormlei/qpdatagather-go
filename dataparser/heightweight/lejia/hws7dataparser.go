@@ -5,9 +5,11 @@ import (
 	"strings"
 )
 
-func HWS7DataParse(byteSlice []byte) any {
+func HWS7DataParse(byteSlice []byte) heightweight.HWData {
+	hwData := heightweight.HWData{}
+
 	if len(byteSlice) == 0 {
-		return nil
+		return hwData
 	}
 
 	orderValue := strings.Replace(string(byteSlice), "OK$", "", 1)
@@ -32,7 +34,6 @@ func HWS7DataParse(byteSlice []byte) any {
 		}
 	}
 
-	hwData := heightweight.HWData{}
 	hwData.W = growthkit_weight
 	hwData.H = growthkit_height
 

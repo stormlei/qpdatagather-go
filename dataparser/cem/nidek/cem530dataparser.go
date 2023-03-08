@@ -45,10 +45,11 @@ type dataFormat struct {
 	} `xml:"Measure"`
 }
 
-func Cem530DataParse(byteSlice []byte) any {
+func Cem530DataParse(byteSlice []byte) cem.CemData {
+	result := cem.CemData{}
 
 	if len(byteSlice) == 0 {
-		return nil
+		return result
 	}
 
 	//od
@@ -66,7 +67,7 @@ func Cem530DataParse(byteSlice []byte) any {
 	dataSlice, err := util.ReadUTF16([]byte(xmlStr))
 	if err != nil {
 		fmt.Printf("%s", err)
-		return nil
+		return result
 	}
 
 	var data dataFormat
@@ -77,7 +78,7 @@ func Cem530DataParse(byteSlice []byte) any {
 	err = decoder.Decode(&data)
 	if err != nil {
 		fmt.Println("Error unmarshalling from XML", err)
-		return nil
+		return result
 	}
 
 	eyeDataRight.Num = data.Measure.SM.R.List.Num
@@ -100,7 +101,6 @@ func Cem530DataParse(byteSlice []byte) any {
 	eyeDataLeft.Hex = data.Measure.SM.L.List.Hex
 	eyeDataLeft.Ct = data.Measure.SM.L.List.Ct
 
-	result := cem.CemData{}
 	result.Od = eyeDataRight
 	result.Os = eyeDataLeft
 

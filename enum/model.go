@@ -20,6 +20,11 @@ const (
 	CT800  Model = "CT-800"
 	CV5000 Model = "CV5000"
 
+	//faliao
+	FR8900 Model = "fr8900"
+	FR710  Model = "fr710"
+	FR900  Model = "fr900"
+
 	//tianle
 	KR9800 Model = "kr9800"
 	RM9000 Model = "rm9000"

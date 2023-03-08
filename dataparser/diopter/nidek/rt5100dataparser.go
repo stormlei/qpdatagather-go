@@ -5,13 +5,13 @@ import (
 	"strings"
 )
 
-func RT5100DataParse(byteSlice []byte) any {
+func RT5100DataParse(byteSlice []byte) diopter.RefractionData {
 	result := diopter.RefractionData{}
 	eyeDataRight := diopter.EyeData{}
 	eyeDataLeft := diopter.EyeData{}
 
 	if len(byteSlice) == 0 {
-		return nil
+		return result
 	}
 
 	var str = string(byteSlice)

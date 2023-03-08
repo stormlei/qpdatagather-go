@@ -10,13 +10,13 @@ import (
 	"strings"
 )
 
-func V100DataParse(byteSlice []byte) any {
+func V100DataParse(byteSlice []byte) diopter.RefractionData {
 	result := diopter.RefractionData{}
 	eyeDataRight := diopter.EyeData{}
 	eyeDataLeft := diopter.EyeData{}
 
 	if len(byteSlice) == 0 {
-		return nil
+		return result
 	}
 
 	var str = string(byteSlice)
@@ -25,7 +25,7 @@ func V100DataParse(byteSlice []byte) any {
 
 	var startPos = strings.Index(content, "{")
 	if startPos == -1 {
-		return nil
+		return result
 	}
 	var data = content[startPos:]
 	tempMap := make(map[string]string)

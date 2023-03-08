@@ -5,15 +5,14 @@ import (
 	"strings"
 )
 
-func FL800DataParse(byteSlice []byte) any {
-
-	if len(byteSlice) == 0 {
-		return nil
-	}
-
+func FL800DataParse(byteSlice []byte) pyrometer.PyroData {
 	result := pyrometer.PyroData{}
 	eyeDataRight := pyrometer.EyeData{}
 	eyeDataLeft := pyrometer.EyeData{}
+
+	if len(byteSlice) == 0 {
+		return result
+	}
 
 	var obj = string(byteSlice)
 	if strings.Contains(obj, "R") && strings.Contains(obj, "L") {

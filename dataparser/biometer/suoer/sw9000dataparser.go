@@ -6,16 +6,16 @@ import (
 	"strings"
 )
 
-func SW9000DataParse(byteSlice []byte) any {
-
-	if len(byteSlice) == 0 {
-		return nil
-	}
-
+func SW9000DataParse(byteSlice []byte) biometer.BioData {
+	result := biometer.BioData{}
 	//od
 	eyeDataRight := biometer.EyeData{}
 	//os
 	eyeDataLeft := biometer.EyeData{}
+
+	if len(byteSlice) == 0 {
+		return result
+	}
 
 	var obj = string(byteSlice)
 	if len(obj) >= 6 {
@@ -109,7 +109,6 @@ func SW9000DataParse(byteSlice []byte) any {
 
 	}
 
-	result := biometer.BioData{}
 	result.Od = eyeDataRight
 	result.Os = eyeDataLeft
 

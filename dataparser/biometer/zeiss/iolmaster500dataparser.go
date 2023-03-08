@@ -5,10 +5,11 @@ import (
 	"strings"
 )
 
-func IolMaster500DataParse(byteSlice []byte) any {
+func IolMaster500DataParse(byteSlice []byte) biometer.BioData {
+	result := biometer.BioData{}
 
 	if len(byteSlice) == 0 {
-		return nil
+		return result
 	}
 
 	eyeDataRight := biometer.EyeData{}
@@ -41,7 +42,6 @@ func IolMaster500DataParse(byteSlice []byte) any {
 		eyeDataLeft.Wtw = extractData(items[16]) //越界处理
 	}
 
-	result := biometer.BioData{}
 	result.Od = eyeDataRight
 	result.Os = eyeDataLeft
 

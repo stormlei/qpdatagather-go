@@ -13,14 +13,18 @@ var (
 	byteEnd   = 0x04
 )
 
-func TopconDataParse(byteSlice []byte) any {
+func TopconDataParse(byteSlice []byte) diopter.RefractionData {
+	result := diopter.RefractionData{}
+	eyeDataRight := diopter.EyeData{}
+	eyeDataLeft := diopter.EyeData{}
+	pd := ""
 
 	if len(byteSlice) == 0 {
-		return nil
+		return result
 	}
 
 	if int(byteSlice[0]) != byteStart || int(byteSlice[len(byteSlice)-1]) != byteEnd {
-		return nil
+		return result
 	}
 
 	var byte22 = readUntilCR(byteSlice)
@@ -28,15 +32,10 @@ func TopconDataParse(byteSlice []byte) any {
 	//读出头部两个字节，//头部数量必须为1
 	var headBytes = byte22[0]
 	if len(headBytes) != 1 {
-		return nil
+		return result
 	}
 	//当前眼
 	var eyeByte = headBytes[0]
-
-	result := diopter.RefractionData{}
-	eyeDataRight := diopter.EyeData{}
-	eyeDataLeft := diopter.EyeData{}
-	pd := ""
 
 	for i := 0; i < len(byte22); i++ {
 		var lineBytes = byte22[i]

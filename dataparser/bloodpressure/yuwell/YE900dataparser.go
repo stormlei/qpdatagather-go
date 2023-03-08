@@ -6,9 +6,11 @@ import (
 	"qpdatagather/dataparser/bloodpressure"
 )
 
-func YE900DataParse(byteSlice []byte) any {
+func YE900DataParse(byteSlice []byte) bloodpressure.BPData {
+	bpData := bloodpressure.BPData{}
+
 	if len(byteSlice) == 0 {
-		return nil
+		return bpData
 	}
 
 	var (
@@ -27,7 +29,6 @@ func YE900DataParse(byteSlice []byte) any {
 	dia = fmt.Sprintf("%f", diaF)
 	pl = fmt.Sprintf("%f", plF)
 
-	bpData := bloodpressure.BPData{}
 	bpData.Sys = sys
 	bpData.Dia = dia
 	bpData.Pl = pl

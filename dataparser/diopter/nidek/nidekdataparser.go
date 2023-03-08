@@ -8,14 +8,14 @@ import (
 	"strings"
 )
 
-func NidekDataParse(byteSlice []byte) any {
+func NidekDataParse(byteSlice []byte) diopter.RefractionData {
 	result := diopter.RefractionData{}
 	eyeDataRight := diopter.EyeData{}
 	eyeDataLeft := diopter.EyeData{}
 	pdEyeData := ""
 
 	if len(byteSlice) == 0 {
-		return nil
+		return result
 	}
 
 	pi := 337.5
