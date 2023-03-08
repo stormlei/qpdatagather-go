@@ -17,4 +17,13 @@ const (
 
 	// Pyrometer 焦度计
 	Pyrometer Type = "pyrometer"
+
+	// HeightWeight 身高体重称
+	HeightWeight Type = "heightWeight"
+
+	// BloodPressure 血压
+	BloodPressure Type = "bloodpressure"
+
+	// VitalCapacity 肺活量
+	VitalCapacity Type = "vitalcapacity"
 )

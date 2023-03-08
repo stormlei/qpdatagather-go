@@ -42,4 +42,14 @@ const (
 
 	//meiwo,mediworks
 	V100 Model = "v100"
+
+	//lejia
+	LJ700 Model = "lj700"
+	HWS7  Model = "hw-s7"
+
+	//yuwell
+	YE900 Model = "ye900"
+
+	//breath
+	JH1663 Model = "jh-1663"
 )

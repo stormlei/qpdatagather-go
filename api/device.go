@@ -10,20 +10,24 @@ import (
 	nidek2 "qpdatagather/dataparser/biometer/nidek"
 	"qpdatagather/dataparser/biometer/suoer"
 	"qpdatagather/dataparser/biometer/zeiss"
+	"qpdatagather/dataparser/bloodpressure/yuwell"
 	nidek4 "qpdatagather/dataparser/cem/nidek"
 	"qpdatagather/dataparser/diopter/hand/meiwo"
 	"qpdatagather/dataparser/diopter/nidek"
 	"qpdatagather/dataparser/diopter/tianle"
 	"qpdatagather/dataparser/diopter/topcon"
+	"qpdatagather/dataparser/heightweight/lejia"
 	"qpdatagather/dataparser/pyrometer/faliao"
 	"qpdatagather/dataparser/pyrometer/jumu"
 	nidek3 "qpdatagather/dataparser/tonometer/nidek"
 	topcon2 "qpdatagather/dataparser/tonometer/topcon"
+	"qpdatagather/dataparser/vitalcapacity/jihao"
 	"qpdatagather/entity"
 	"qpdatagather/enum"
 	"qpdatagather/log"
 	"qpdatagather/util"
 	"qpdatagather/validator"
+	"strings"
 )
 
 type deviceCreatePayload struct {
@@ -33,6 +37,7 @@ type deviceCreatePayload struct {
 	Brand   enum.Brand `json:"brand" binding:"required"`
 	Model   enum.Model `json:"model" binding:"required"`
 	OriData string     `json:"oriData" binding:"required"`
+	Mac     string     `json:"mac" binding:"required"`
 }
 
 var result any
@@ -155,6 +160,32 @@ func dataParse(payload deviceCreatePayload) {
 				result = jumu.LM260DataParse(oriDataByteSlice)
 			}
 		}
+	case enum.HeightWeight, "身高体重秤":
+		switch brand {
+		case enum.Lejia, "乐佳":
+			switch model {
+			case enum.HWS7:
+				result = lejia.HWS7DataParse(oriDataByteSlice)
+			case enum.LJ700:
+				result = lejia.LJ700DataParse(oriDataByteSlice)
+			}
+		}
+	case enum.BloodPressure, "血压计":
+		switch brand {
+		case enum.Yuwell, "鱼跃":
+			switch model {
+			case enum.YE900:
+				result = yuwell.YE900DataParse(oriDataByteSlice)
+			}
+		}
+	case enum.VitalCapacity, "肺活量":
+		switch brand {
+		case enum.Jihao, "继豪":
+			switch model {
+			case enum.JH1663:
+				result = jihao.JH1663DataParse(oriDataByteSlice)
+			}
+		}
 	}
 }
 
@@ -164,6 +195,13 @@ func deviceParser(c *gin.Context) {
 		util.ResponseErrf(c, "请求错误：%s", validator.Translate(err))
 		return
 	}
+
+	if len(payload.Mac) != 17 && strings.Count(payload.Mac, ":") != 5 {
+		util.ResponseErrf(c, "mac地址格式不正确")
+		return
+	}
+	//1。验证数据库中有没有mac
+	//2。存入缓存，3s过期。先从缓存中拿，拿得到返回错误（存在相同mac地址）。拿不到继续。
 
 	dataParse(payload)
 

@@ -7,10 +7,10 @@ import (
 
 func TestDataParse(t *testing.T) {
 	payload := deviceCreatePayload{
-		Type:    "验光仪",
-		Brand:   "tianle",
-		Model:   "rm9000",
-		OriData: "UyBObz0wMDAwMCBSIEIgRVMtUi1SIC0wMS41MCAtMDAuMjUgICs5MiA1OSBFUy1SLUwgLTAwLjc1ICswMC4wMCAgKzAwIDU5IEU=",
+		Type:    "heightWeight",
+		Brand:   "lejia",
+		Model:   "lj700",
+		OriData: "VzA1NDQkSDE1OTAkUiQ=",
 	}
 	result := deviceTest(payload)
 	fmt.Println(result)

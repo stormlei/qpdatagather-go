@@ -13,4 +13,10 @@ const (
 	Mediworks   Brand = "mediworks"
 	Suoer       Brand = "suoer"
 	SuperVision Brand = "supervision"
+
+	Lejia Brand = "lejia"
+
+	Yuwell Brand = "yuwell"
+
+	Jihao Brand = "jihao"
 )
