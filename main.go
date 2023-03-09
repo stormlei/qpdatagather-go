@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"qpdatagather/config"
+	"qpdatagather/db"
 	"qpdatagather/log"
 	"qpdatagather/server"
 	"qpdatagather/validator"
@@ -30,6 +31,7 @@ func main() {
 
 	log.Debugf("profile = %s", *profile)
 
+	db.Init(conf)
 	validator.Init()
 	server.Init()
 }

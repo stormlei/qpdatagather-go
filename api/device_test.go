@@ -1,17 +1,37 @@
 package api
 
 import (
+	"encoding/json"
 	"fmt"
+	"qpdatagather/entity"
 	"testing"
 )
 
 func TestDataParse(t *testing.T) {
-	payload := deviceCreatePayload{
-		Type:    "bloodpressure",
-		Brand:   "yuwell",
-		Model:   "ye900",
-		OriData: "FmQAOwBIAOUHCxAGOhNWAAQA",
+	//payload := deviceCreatePayload{
+	//	Type:    "bloodpressure",
+	//	Brand:   "yuwell",
+	//	Model:   "ye900",
+	//	OriData: "FoYA/wf/B+UHCxANEBz/BxAAFoMA/wf/B+UHCxANEB3/BxAA",
+	//}
+	//result := deviceTest(payload)
+	//fmt.Println(result)
+
+	fmt.Println(0x46)
+}
+
+func deviceTest(payload deviceCreatePayload) any {
+	dataParse(payload)
+
+	device := &entity.Device{}
+	payloadJson, _ := json.Marshal(payload)
+	_ = json.Unmarshal(payloadJson, device)
+	if result != nil {
+		resultJson, _ := json.Marshal(result)
+		device.ParData = string(resultJson)
+		device.Status = 100
+		return device.ParData
+	} else {
+		return nil
 	}
-	result := deviceTest(payload)
-	fmt.Println(result)
 }

@@ -23,6 +23,7 @@ import (
 	nidek3 "qpdatagather/dataparser/tonometer/nidek"
 	topcon2 "qpdatagather/dataparser/tonometer/topcon"
 	"qpdatagather/dataparser/vitalcapacity/jihao"
+	"qpdatagather/db"
 	"qpdatagather/entity"
 	"qpdatagather/enum"
 	"qpdatagather/log"
@@ -247,18 +248,26 @@ func isJSON(str string) bool {
 	return json.Unmarshal([]byte(str), &js) == nil
 }
 
-func deviceTest(payload deviceCreatePayload) any {
-	dataParse(payload)
+type macCreatePayload struct {
+	Mac string `json:"mac" binding:"required"`
+}
 
-	device := &entity.Device{}
-	payloadJson, _ := json.Marshal(payload)
-	_ = json.Unmarshal(payloadJson, device)
-	if result != nil {
-		resultJson, _ := json.Marshal(result)
-		device.ParData = string(resultJson)
-		device.Status = 100
-		return device.ParData
-	} else {
-		return nil
+func bleMacCreate(c *gin.Context) {
+	var payload macCreatePayload
+	if err := c.ShouldBindJSON(&payload); err != nil {
+		util.ResponseErrf(c, "请求错误：%s", validator.Translate(err))
+		return
 	}
+
+	if len(payload.Mac) != 17 && strings.Count(payload.Mac, ":") != 5 {
+		util.ResponseErrf(c, "mac地址格式不正确")
+		return
+	}
+
+	bleMac := &entity.BleMac{}
+	var list []entity.BleMac
+	db.GetDb().Where("mac = ?", payload.Mac).Find(&list)
+
+	db.GetDb().Create(&bleMac)
+	util.ResponseSuccess(c, bleMac)
 }
