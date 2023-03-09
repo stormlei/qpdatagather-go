@@ -7,10 +7,10 @@ import (
 
 func TestDataParse(t *testing.T) {
 	payload := deviceCreatePayload{
-		Type:    "heightWeight",
-		Brand:   "lejia",
-		Model:   "lj700",
-		OriData: "VzA1NDQkSDE1OTAkUiQ=",
+		Type:    "bloodpressure",
+		Brand:   "yuwell",
+		Model:   "ye900",
+		OriData: "FmQAOwBIAOUHCxAGOhNWAAQA",
 	}
 	result := deviceTest(payload)
 	fmt.Println(result)

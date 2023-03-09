@@ -25,9 +25,9 @@ func YE900DataParse(byteSlice []byte) bloodpressure.BPData {
 	diaF := getFloatValue(0x32, 3)
 	plF := getFloatValue(0x32, 14)
 
-	sys = fmt.Sprintf("%f", sysF)
-	dia = fmt.Sprintf("%f", diaF)
-	pl = fmt.Sprintf("%f", plF)
+	sys = fmt.Sprintf("%.1f", sysF)
+	dia = fmt.Sprintf("%.1f", diaF)
+	pl = fmt.Sprintf("%.1f", plF)
 
 	bpData.Sys = sys
 	bpData.Dia = dia
@@ -67,14 +67,14 @@ func bytesToFloat(b0 byte, b1 byte) float64 {
 }
 
 func unsignedToSigned(unsigned int, size int) int {
-	if (unsigned & (1<<size - 1)) != 0 {
-		unsigned = -1 * ((1<<size - 1) - (unsigned & ((1<<size - 1) - 1)))
+	if unsigned&(1<<(size-1)) != 0 {
+		unsigned = -1 * ((1 << (size - 1)) - (unsigned & ((1 << (size - 1)) - 1)))
 	}
 	return unsigned
 }
 
 func unsignedByteToInt(b byte) int {
-	return int(b)
+	return int(b & 0xFF)
 }
 
 func size() int {
