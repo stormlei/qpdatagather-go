@@ -8,20 +8,18 @@ import (
 )
 
 func TestDataParse(t *testing.T) {
-	//payload := deviceCreatePayload{
-	//	Type:    "bloodpressure",
-	//	Brand:   "yuwell",
-	//	Model:   "ye900",
-	//	OriData: "FoYA/wf/B+UHCxANEBz/BxAAFoMA/wf/B+UHCxANEB3/BxAA",
-	//}
-	//result := deviceTest(payload)
-	//fmt.Println(result)
-
-	fmt.Println(0x46)
+	payload := deviceCreatePayload{
+		Type:    "bloodpressure",
+		Brand:   "yuwell",
+		Model:   "ye900",
+		OriData: "FoYA/wf/B+UHCxANEBz/BxAAFoMA/wf/B+UHCxANEB3/BxAA",
+	}
+	result := deviceTest(payload)
+	fmt.Println(result)
 }
 
 func deviceTest(payload deviceCreatePayload) any {
-	dataParse(payload)
+	dataParser(payload)
 
 	device := &entity.Device{}
 	payloadJson, _ := json.Marshal(payload)

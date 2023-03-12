@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	cachet "qpdatagather/cache"
 	"qpdatagather/config"
 	"qpdatagather/db"
 	"qpdatagather/log"
@@ -31,6 +32,7 @@ func main() {
 
 	log.Debugf("profile = %s", *profile)
 
+	cachet.Init(conf)
 	db.Init(conf)
 	validator.Init()
 	server.Init()

@@ -7,6 +7,7 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"io"
+	cachet "qpdatagather/cache"
 	nidek2 "qpdatagather/dataparser/biometer/nidek"
 	"qpdatagather/dataparser/biometer/suoer"
 	"qpdatagather/dataparser/biometer/zeiss"
@@ -33,7 +34,6 @@ import (
 )
 
 type deviceCreatePayload struct {
-	AppId   int64      `json:"appId"`
 	Project string     `json:"project"`
 	Type    enum.Type  `json:"type" binding:"required"`
 	Brand   enum.Brand `json:"brand" binding:"required"`
@@ -50,7 +50,7 @@ type jsonData struct {
 	Data    string `json:"data"`
 }
 
-func dataParse(payload deviceCreatePayload) {
+func dataParser(payload deviceCreatePayload) {
 	var typeT = payload.Type
 	var brand = payload.Brand
 	var model = payload.Model
@@ -198,7 +198,7 @@ func dataParse(payload deviceCreatePayload) {
 	}
 }
 
-func deviceParser(c *gin.Context) {
+func deviceParse(c *gin.Context) {
 	var payload deviceCreatePayload
 	if err := c.ShouldBindJSON(&payload); err != nil {
 		util.ResponseErrf(c, "请求错误：%s", validator.Translate(err))
@@ -210,9 +210,21 @@ func deviceParser(c *gin.Context) {
 		return
 	}
 	//1。验证数据库中有没有mac
-	//2。存入缓存，3s过期。先从缓存中拿，拿得到返回错误（存在相同mac地址）。拿不到继续。
+	var macList []entity.BleMac
+	db.GetDb().Where("mac = ?", payload.Mac).Find(&macList)
+	if len(macList) == 0 {
+		util.ResponseErr(c, "mac地址未通过认证")
+		return
+	}
+	//2。验证缓存，3s过期
+	mac, found := cachet.GetCache().Get("mac")
+	if found {
+		util.ResponseErrf(c, "mac地址%s未通过认证", mac) //3s内存在相同mac请求解析
+		return
+	}
+	cachet.GetCache().Set("mac", payload.Mac, cachet.DefaultExpiration)
 
-	dataParse(payload)
+	dataParser(payload)
 
 	device := &entity.Device{}
 	payloadJson, _ := json.Marshal(payload)
@@ -264,10 +276,14 @@ func bleMacCreate(c *gin.Context) {
 		return
 	}
 
+	var macList []entity.BleMac
+	db.GetDb().Where("mac = ?", payload.Mac).Find(&macList)
+	if len(macList) > 0 {
+		util.ResponseErr(c, "该mac地址已经存在")
+		return
+	}
 	bleMac := &entity.BleMac{}
-	var list []entity.BleMac
-	db.GetDb().Where("mac = ?", payload.Mac).Find(&list)
-
+	bleMac.Mac = payload.Mac
 	db.GetDb().Create(&bleMac)
 	util.ResponseSuccess(c, bleMac)
 }

@@ -4,6 +4,15 @@ name = "qpdatagather"
 port = 8080
 version = "0.0.1"
 
+#缓存
+[cache]
+defaultExpiration = 3
+cleanupInterval = 5
+
+#数据库
+[db]
+conn = "erptest:peyj4NPuYmCVggPP@tcp(sh-cdb-70ftss4s.sql.tencentcdb.com:60155)/erptest?charset=utf8mb4&parseTime=True&loc=Local"
+
 #日志
 [log]
 level = "debug"
